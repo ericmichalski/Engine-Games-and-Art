@@ -1,0 +1,1131 @@
+#   Program created by Eric Michalski and Grace Owens
+#   Copyright 2019, All Rights Reserved
+
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+template <class T>
+class Queues{
+public:
+    int front, rear;
+    vector<T> queue;
+    Queues(){front = 0; rear = 0;}
+    void enqueue(T l){
+         queue.push_back(l);
+         rear+=1;
+        }
+
+    T dequeue(){
+        T returnval;
+        if(front == rear){
+            cout << endl << "Empty!" << endl;
+        }
+        else{
+            returnval = queue[front];
+            for (int i = 0; i <rear-1;i++){
+                queue[i] = queue[i+1];
+            }
+
+        } rear-=1;
+        return returnval;
+    }
+    void printQueue(){
+        if (front ==rear){
+            cout << endl << "Empty!" << endl;
+        }
+        else{
+            for (int i=0; i < rear; i++){
+                cout << queue[i]<< endl;
+            }
+        }
+    }
+};
+
+template<class T>
+class Stack {
+
+private:
+    int SIZE;
+public:
+    T** tower;
+    int top;
+    template<class T1>
+    friend void displayTower(Stack<T1> s);
+    template<class T2>
+    friend bool check(Stack<T2> t, int num);
+    Stack<T>(int size) {
+        SIZE = size;
+        tower = new T * [size];
+        top = -1;
+    }
+
+    void push(T* val) {
+        if (top == SIZE - 1) {
+            throw Over();
+        }
+        else{
+            top += 1;
+            tower[top] = val;
+        }
+    }
+
+    T* pop() {
+        if (top == -1)
+        {
+            throw Under();
+        }
+        else{
+            T* val = tower[top];
+            int zero = 0;
+            tower[top] = &zero;
+            top -= 1;
+            return val;
+        }
+    }
+
+    T topOf() { return *tower[top]; }
+
+    int length() { return top + 1; }
+
+    void empty() {
+        for (int i = 0; i < SIZE; i++) {
+            delete tower[i];
+        }
+    }
+    class Over {};
+    class Under {};
+};
+
+template<class T1>
+void displayTower(Stack<T1> s) {
+    for (int i = 0; i < s.SIZE; i++) {
+        cout << *s.tower[i] << " ";
+    }
+    cout << endl;
+}
+int main()
+{
+    int numDisks;
+    int movefrom;
+    int moveto;
+    bool win = 0;
+    int player = 1;
+    bool firstround = 1;
+    Queues<string> moves;
+    int movedisk;
+    int movetowerfrom;
+    int movetowerto;
+    string move="";
+
+    bool check(Stack<int> t, int num, int p);
+    cout << "How many disks would you like?\n";
+    cin >> numDisks;
+    cout << "Player 1 will start. Player 1 wins if\n"
+        "they complete the 2nd or 3rd tower.\n"
+        "Player 2 wins if they complete the 1st\n"
+        "or 2nd tower.\nPlayer 1 is playing with "
+        "disks 1 through " << numDisks << "\n"
+        "Player 2 is playing with disks " << numDisks + 1 << " through " << numDisks * 2 << " \n"
+        "You now have 3 towers. Here they are:\n";
+    Stack<int> first(numDisks);
+    Stack<int> two(numDisks);
+    Stack<int> third(numDisks);
+    Stack<int> fourth(numDisks);
+    Stack<int> fifth(numDisks);
+
+    int arr[numDisks];
+    int ar[numDisks];
+    int zeroarray[numDisks];
+    for (int i = 0; i < numDisks; i++) {
+        zeroarray[i] = 0;
+    }
+    for (int i = 0; i < numDisks; i++) {
+        arr[i] = numDisks - i;
+    }
+    for (int i = 0; i < numDisks; i++) {
+
+        first.push(&arr[i]);
+    }
+    for (int i = 0; i < numDisks; i++) {
+
+        two.push(&zeroarray[i]);
+    }
+    for (int i = 0; i < numDisks; i++) {
+
+        fourth.push(&zeroarray[i]);
+    }
+    for (int i = 0; i < numDisks; i++) {
+
+        third.push(&zeroarray[i]);
+    }
+    for (int i = 0; i < numDisks; i++) {
+        ar[i] = numDisks + numDisks - i;
+    }
+    for (int i = 0; i < numDisks; i++) {
+        fifth.push(&ar[i]);
+    }
+    cout << endl << "Towers in order from 1 to 5" << endl << endl;
+    cout << "Tower 1: " << endl;
+    displayTower(first);
+    cout << "Tower 2: " << endl;
+    displayTower(two);
+    cout << "Tower 3: " << endl;
+    displayTower(third);
+    cout << "Tower 4: " << endl;
+    displayTower(fourth);
+    cout << "Tower 5: " << endl;
+    displayTower(fifth);
+
+    // Variables used for checking disk sizes
+    two.top = -1;
+    fourth.top = -1;
+    third.top = -1;
+    int x = 0;  // Tower 1
+    int y = 0;  // Tower 2
+    int z = 0;  // Tower 3
+    int w = 0;  // Tower 4
+    int q = 0;  // Tower 5
+
+    while (!win){
+
+        cout << "It is Player " << player << "'s turn.\n";
+        cout << "Which tower would you like to move from? Enter 1, 2, 3, 4, or 5\n";
+        cin >> movefrom;
+        cout << "Which tower would you like to move to? Enter 1, 2, 3, 4, or 5\n";
+        cin >> moveto;
+
+        if(movefrom==1 && moveto == 2){
+           if (two.top == -1)
+           {
+               try{
+                   int*  val = first.pop();
+                   two.push(val);
+                   move = "Player " + to_string(player) + " moved disk " + to_string(*val)+ " from Tower 1 to 2.\n";
+                   moves.enqueue(move);
+               }
+               catch(Stack<int>::Over){cout << "Tower 2 is full\n";}
+               catch(Stack<int>::Under){cout<< "Tower 1 is empty\n";}
+           }
+           else if (two.top != -1){
+               if (*first.tower[first.top] >= numDisks + 1 && *first.tower[first.top] <= numDisks * 2)       // If the tower numbers are between player 2's numbers
+               {
+                x = *first.tower[first.top] - 3; // Subtracts 3 from tower 1 top to get number similar to player 1 (ie 6 - 3 is then 3, which is largest disk)
+               }
+               else{
+                x = *first.tower[first.top];
+               }
+               if (*two.tower[two.top] >= numDisks + 1 && *two.tower[two.top] <= numDisks * 2)       // If the tower numbers are between player 2's numbers
+               {
+               y = *two.tower[two.top] - 3;    // Subtracts 3
+               }
+               else{
+                   y = *two.tower[two.top];
+               }
+               if (x <= y || y == 0)     // If the disk size moving from is smaller than or the same as the one it will be placed on
+               {
+                   try{
+                   int*  val = first.pop();
+                   two.push(val);
+                   move = "Player " + to_string(player) + " moved disk " + to_string(*val)+ " from Tower 1 to 2.\n";
+                   moves.enqueue(move);
+               }
+                   catch(Stack<int>::Over){cout << "Tower 2 is full\n";}
+                   catch(Stack<int>::Under){cout<< "Tower 1 is empty\n";}
+               }
+               else
+               {
+                   cout << "\n Error: Disk is too large \n\n";
+               }
+           }
+       }
+        if(movefrom==1 && moveto == 3){
+            if (third.top == -1)
+            {
+                try{
+                    int * val = first.pop();
+                    third.push(val);
+                    move = "Player " + to_string(player) + " moved disk " + to_string(*val)+ " from Tower 1 to 3.\n";
+                    moves.enqueue(move);
+                }
+                catch(Stack<int>::Over){cout << "Tower 3 is full\n";}
+                catch(Stack<int>::Under){cout<< "Tower 1 is empty\n";}
+            }
+            else if (third.top != -1){
+                if (*first.tower[first.top] >= numDisks + 1 && *first.tower[first.top] <= numDisks * 2)       // If the tower numbers are between player 2's numbers
+                {
+                x = *first.tower[first.top] - 3;
+                }
+                else{
+                    x = *first.tower[first.top];
+                }
+                if (*third.tower[third.top] >= numDisks + 1 && *third.tower[third.top] <= numDisks * 2)       // If the tower numbers are between player 2's numbers
+                {
+                    z = *third.tower[third.top] - 3;
+                }
+                else{
+                    z = *third.tower[third.top];
+                }
+                if (x <= z || z == 0)     // If the disk size moving from  is smaller than or the same as the one it will be placed on
+                {
+                    try{
+                        int * val = first.pop();
+                        third.push(val);
+                        move = "Player " + to_string(player) + " moved disk " + to_string(*val)+ " from Tower 1 to 3.\n";
+                        moves.enqueue(move);
+                    }
+                    catch(Stack<int>::Over){cout << "Tower 3 is full\n";}
+                    catch(Stack<int>::Under){cout<< "Tower 1 is empty\n";}
+                }
+                else
+                {
+                    cout << "\n Error: Disk is too large \n\n";
+                }
+            }
+        }
+        if(movefrom==1 && moveto == 4){
+            if (fourth.top == -1)
+            {
+                try{
+                    int*  val = first.pop();
+                    fourth.push(val);
+                    move = "Player " + to_string(player) + " moved disk " + to_string(*val)+ " from Tower 1 to 4.\n";
+                    moves.enqueue(move);
+                }
+                catch(Stack<int>::Over){cout << "Tower 4 is full\n";}
+                catch(Stack<int>::Under){cout<< "Tower 1 is empty\n";}
+            }
+            else if (fourth.top != -1){
+                if (*first.tower[first.top] >= numDisks + 1 && *first.tower[first.top] <= numDisks * 2)       // If the tower numbers are between player 2's numbers
+                {
+                 x = *first.tower[first.top] - 3; // Subtracts 3 from tower 1 top to get number similar to player 1 (ie 6 - 3 is then 3, which is largest disk)
+                }
+                else{
+                 x = *first.tower[first.top];
+                }
+                if (*fourth.tower[fourth.top] >= numDisks + 1 && *fourth.tower[fourth.top] <= numDisks * 2)       // If the tower numbers are between player 2's numbers
+                {
+                w = *fourth.tower[fourth.top] - 3;    // Subtracts 3
+                }
+                else{
+                    w = *fourth.tower[fourth.top];
+                }
+                if (x <= w || w == 0)     // If the disk size moving from is smaller than or the same as the one it will be placed on
+                {
+                    try{
+                    int*  val = first.pop();
+                    fourth.push(val);
+                    move = "Player " + to_string(player) + " moved disk " + to_string(*val)+ " from Tower 1 to 4.\n";
+                    moves.enqueue(move);
+                }
+                    catch(Stack<int>::Over){cout << "Tower 4 is full\n";}
+                    catch(Stack<int>::Under){cout<< "Tower 1 is empty\n";}
+                }
+                else
+                {
+                    cout << "\n Error: Disk is too large \n\n";
+                }
+            }
+        }
+        if(movefrom==1 && moveto == 5){
+            if (fifth.top == -1)
+            {
+                try{
+                    int*  val = first.pop();
+                    fifth.push(val);
+                    move = "Player " + to_string(player) + " moved disk " + to_string(*val)+ " from Tower 1 to 5.\n";
+                    moves.enqueue(move);
+                }
+                catch(Stack<int>::Over){cout << "Tower 5 is full\n";}
+                catch(Stack<int>::Under){cout<< "Tower 1 is empty\n";}
+            }
+            else if (fifth.top != -1){
+                if (*first.tower[first.top] >= numDisks + 1 && *first.tower[first.top] <= numDisks * 2)       // If the tower numbers are between player 2's numbers
+                {
+                 x = *first.tower[first.top] - 3; // Subtracts 3 from tower 1 top to get number similar to player 1 (ie 6 - 3 is then 3, which is largest disk)
+                }
+                else{
+                 x = *first.tower[first.top];
+                }
+                if (*fifth.tower[fifth.top] >= numDisks + 1 && *fifth.tower[fifth.top] <= numDisks * 2)       // If the tower numbers are between player 2's numbers
+                {
+                q = *fifth.tower[fifth.top] - 3;    // Subtracts 3
+                }
+                else{
+                    q = *fifth.tower[fifth.top];
+                }
+                if (x <= q || q == 0)     // If the disk size moving from is smaller than or the same as the one it will be placed on
+                {
+                    try{
+                    int*  val = first.pop();
+                    fifth.push(val);
+                    move = "Player " + to_string(player) + " moved disk " + to_string(*val)+ " from Tower 1 to 5.\n";
+                    moves.enqueue(move);
+                }
+                    catch(Stack<int>::Over){cout << "Tower 5 is full\n";}
+                    catch(Stack<int>::Under){cout<< "Tower 1 is empty\n";}
+                }
+                else
+                {
+                    cout << "\n Error: Disk is too large \n\n";
+                }
+            }
+        }
+
+
+        if(movefrom==2 && moveto == 1){
+            if (first.top == -1)
+            {
+                try{
+                    int * val = two.pop();
+                    first.push(val);
+                    move = "Player " + to_string(player) + " moved disk " + to_string(*val)+ " from Tower 2 to 1.\n";
+                    moves.enqueue(move);
+                }
+                catch(Stack<int>::Over){cout << "Tower 1 is full\n";}
+                catch(Stack<int>::Under){cout<< "Tower 2 is empty\n";}
+            }
+            else if (first.top != -1){
+                if (*first.tower[first.top] >= numDisks + 1 && *first.tower[first.top] <= numDisks * 2)       // If the tower numbers are between player 2's numbers
+                {
+                    x = *first.tower[first.top] - 3;
+                }
+                else{
+                    x = *first.tower[first.top];
+                }
+                if (*two.tower[two.top] >= numDisks + 1 && *two.tower[two.top] <= numDisks * 2)       // If the tower numbers are between player 2's numbers
+                {
+                    y = *two.tower[two.top] - 3;
+                }
+                else{
+                    y = *two.tower[two.top];
+                }
+                if (y <= x || x == 0)     // If the disk size moving from is smaller than or the same as the one it will be placed on
+                {
+                    try{
+                        int * val = two.pop();
+                        first.push(val);
+                        move = "Player " + to_string(player) + " moved disk " + to_string(*val)+ " from Tower 2 to 1.\n";
+                        moves.enqueue(move);
+                    }
+                    catch(Stack<int>::Over){cout << "Tower 1 is full\n";}
+                    catch(Stack<int>::Under){cout<< "Tower 2 is empty\n";}
+                }
+                else
+                {
+                    cout << "\n Error: Disk is too large \n\n";
+                }
+            }
+        }
+        if(movefrom==2 && moveto == 3){
+            if (third.top == -1){
+                try{
+                    int * val = two.pop();
+                    third.push(val);
+                    move = "Player " + to_string(player) + " moved disk " + to_string(*val)+ " from Tower 2 to 3.\n";
+                    moves.enqueue(move);
+                }
+                catch(Stack<int>::Over){cout << "Tower 3 is full\n";}
+                catch(Stack<int>::Under){cout<< "Tower 2 is empty\n";}
+            }
+            else if (third.top != -1){
+                if (*third.tower[third.top] >= numDisks + 1 && *third.tower[third.top] <= numDisks * 2)       // If the tower numbers are between player 2's numbers
+                {
+                    z = *third.tower[third.top] - 3;
+                }
+                else{
+                    z = *third.tower[third.top];
+                }
+                if (*two.tower[two.top] >= numDisks + 1 && *two.tower[two.top] <= numDisks * 2)       // If the tower numbers are between player 2's numbers
+                {
+                    y = *two.tower[two.top] - 3;
+                }
+                else{
+                    y = *two.tower[two.top];
+                }
+                if (y <= z || z == 0)     // If the disk size moving from is smaller than or the same as the one it will be placed on
+                {
+                    try{
+                        int * val = two.pop();
+                        third.push(val);
+                        move = "Player " + to_string(player) + " moved disk " + to_string(*val)+ " from Tower 2 to 3.\n";
+                        moves.enqueue(move);
+                    }
+                    catch(Stack<int>::Over){cout << "Tower 3 is full\n";}
+                    catch(Stack<int>::Under){cout<< "Tower 2 is empty\n";}
+                }
+                else
+                {
+                    cout << "\n Error: Disk is too large \n\n";
+                }
+            }
+        }
+        if(movefrom==2 && moveto == 4){
+            if (fourth.top == -1){
+                try{
+                    int * val = two.pop();
+                    fourth.push(val);
+                    move = "Player " + to_string(player) + " moved disk " + to_string(*val)+ " from Tower 2 to 4.\n";
+                    moves.enqueue(move);
+                }
+                catch(Stack<int>::Over){cout << "Tower 4 is full\n";}
+                catch(Stack<int>::Under){cout<< "Tower 2 is empty\n";}
+            }
+            else if (fourth.top != -1){
+                if (*fourth.tower[fourth.top] >= numDisks + 1 && *fourth.tower[fourth.top] <= numDisks * 2)       // If the tower numbers are between player 2's numbers
+                {
+                    w = *fourth.tower[fourth.top] - 3;
+                }
+                else{
+                    w = *fourth.tower[fourth.top];
+                }
+                if (*two.tower[two.top] >= numDisks + 1 && *two.tower[two.top] <= numDisks * 2)       // If the tower numbers are between player 2's numbers
+                {
+                    y = *two.tower[two.top] - 3;
+                }
+                else{
+                    y = *two.tower[two.top];
+                }
+                if (y <= w || w == 0)     // If the disk size moving from is smaller than or the same as the one it will be placed on
+                {
+                    try{
+                        int * val = two.pop();
+                        fourth.push(val);
+                        move = "Player " + to_string(player) + " moved disk " + to_string(*val)+ " from Tower 2 to 4.\n";
+                        moves.enqueue(move);
+                    }
+                    catch(Stack<int>::Over){cout << "Tower 4 is full\n";}
+                    catch(Stack<int>::Under){cout<< "Tower 2 is empty\n";}
+                }
+                else
+                {
+                    cout << "\n Error: Disk is too large \n\n";
+                }
+            }
+        }
+        if(movefrom==2 && moveto == 5){
+            if (fifth.top == -1){
+                try{
+                    int * val = two.pop();
+                    fifth.push(val);
+                    move = "Player " + to_string(player) + " moved disk " + to_string(*val)+ " from Tower 2 to 5.\n";
+                    moves.enqueue(move);
+                }
+                catch(Stack<int>::Over){cout << "Tower 5 is full\n";}
+                catch(Stack<int>::Under){cout<< "Tower 2 is empty\n";}
+            }
+            else if (fifth.top != -1){
+                if (*fifth.tower[fifth.top] >= numDisks + 1 && *fifth.tower[fifth.top] <= numDisks * 2)       // If the tower numbers are between player 2's numbers
+                {
+                    q = *fifth.tower[fifth.top] - 3;
+                }
+                else{
+                    q = *fifth.tower[fifth.top];
+                }
+                if (*two.tower[two.top] >= numDisks + 1 && *two.tower[two.top] <= numDisks * 2)       // If the tower numbers are between player 2's numbers
+                {
+                    y = *two.tower[two.top] - 3;
+                }
+                else{
+                    y = *two.tower[two.top];
+                }
+                if (y <= q || q == 0)     // If the disk size moving from is smaller than or the same as the one it will be placed on
+                {
+                    try{
+                        int * val = two.pop();
+                        fifth.push(val);
+                        move = "Player " + to_string(player) + " moved disk " + to_string(*val)+ " from Tower 2 to 5.\n";
+                        moves.enqueue(move);
+                    }
+                    catch(Stack<int>::Over){cout << "Tower 5 is full\n";}
+                    catch(Stack<int>::Under){cout<< "Tower 2 is empty\n";}
+                }
+                else
+                {
+                    cout << "\n Error: Disk is too large \n\n";
+                }
+            }
+        }
+
+
+        if(movefrom==3 && moveto == 1){
+            if (first.top == -1){
+                try{
+                    int *val = third.pop();
+                    first.push(val);
+                    move = "Player " + to_string(player) + " moved disk " + to_string(*val)+ " from Tower 3 to 1.\n";
+                    moves.enqueue(move);
+                }
+                catch(Stack<int>::Over){cout << "Tower 1 is full\n";}
+                catch(Stack<int>::Under){cout<< "Tower 3 is empty\n";}
+            }
+            else if (first.top != -1){
+                if (*first.tower[first.top] >= numDisks + 1 && *first.tower[first.top] <= numDisks * 2)       // If the tower numbers are between player 2's numbers
+                {
+                    x = *first.tower[first.top] - 3;
+                }
+                else{
+                    x = *first.tower[first.top];
+                }
+                if (*third.tower[third.top] >= numDisks + 1 && *third.tower[third.top] <= numDisks * 2)       // If the tower numbers are between player 2's numbers
+                {
+                    z = *third.tower[third.top] - 3;
+                }
+                else{
+                    z = *third.tower[third.top];
+                }
+                if (z <= x || x == 0)     // If the disk size moving from is smaller than or the same as the one it will be placed on
+                {
+                    try{
+                        int *val = third.pop();
+                        first.push(val);
+                        move = "Player " + to_string(player) + " moved disk " + to_string(*val)+ " from Tower 3 to 1.\n";
+                        moves.enqueue(move);
+                    }
+                    catch(Stack<int>::Over){cout << "Tower 1 is full\n";}
+                    catch(Stack<int>::Under){cout<< "Tower 3 is empty\n";}
+                }
+                else
+                {
+                    cout << "\n Error: Disk is too large \n\n";
+                }
+            }
+        }
+        if(movefrom==3 && moveto == 2){
+            if (two.top == -1)
+            {
+                try{
+                    int * val = third.pop();
+                    two.push(val);
+                    move = "Player " + to_string(player) + " moved disk " + to_string(*val)+ " from Tower 3 to 2.\n";
+                    moves.enqueue(move);
+                }
+                catch(Stack<int>::Over){cout << "Tower 2 is full\n";}
+                catch(Stack<int>::Under){cout<< "Tower 3 is empty\n";}
+            }
+            else if (two.top != -1){
+                if (*third.tower[third.top] >= numDisks + 1 && *third.tower[third.top] <= numDisks * 2)       // If the tower numbers are between player 2's numbers
+                {
+                    z = *third.tower[third.top] - 3;
+                }
+                else{
+                    z = *third.tower[third.top];
+                }
+                if (*two.tower[two.top] >= numDisks + 1 && *two.tower[two.top] <= numDisks * 2)       // If the tower numbers are between player 2's numbers
+                {
+                    y = *two.tower[two.top] - 3;
+                }
+                else{
+                    y = *two.tower[two.top];
+                }
+                if (z <= y || y == 0)     // If the disk size moving from is smaller than or the same as the one it will be placed on
+                {
+                    try{
+                        int * val = third.pop();
+                        two.push(val);
+                        move = "Player " + to_string(player) + " moved disk " + to_string(*val)+ " from Tower 3 to 2.\n";
+                        moves.enqueue(move);
+                    }
+                    catch(Stack<int>::Over){cout << "Tower 2 is full\n";}
+                    catch(Stack<int>::Under){cout<< "Tower 3 is empty\n";}
+                }
+                else
+                {
+                    cout << "\n Error: Disk is too large \n\n";
+                }
+            }
+        }
+        if(movefrom==3 && moveto == 4){
+            if (fourth.top == -1)
+            {
+                try{
+                    int * val = third.pop();
+                    fourth.push(val);
+                    move = "Player " + to_string(player) + " moved disk " + to_string(*val)+ " from Tower 3 to 4.\n";
+                    moves.enqueue(move);
+                }
+                catch(Stack<int>::Over){cout << "Tower 4 is full\n";}
+                catch(Stack<int>::Under){cout<< "Tower 3 is empty\n";}
+            }
+            else if (fourth.top != -1){
+                if (*third.tower[third.top] >= numDisks + 1 && *third.tower[third.top] <= numDisks * 2)       // If the tower numbers are between player 2's numbers
+                {
+                    z = *third.tower[third.top] - 3;
+                }
+                else{
+                    z = *third.tower[third.top];
+                }
+                if (*fourth.tower[fourth.top] >= numDisks + 1 && *fourth.tower[fourth.top] <= numDisks * 2)       // If the tower numbers are between player 2's numbers
+                {
+                    w = *fourth.tower[fourth.top] - 3;
+                }
+                else{
+                    w = *fourth.tower[fourth.top];
+                }
+                if (z <= w || w == 0)     // If the disk size moving from is smaller than or the same as the one it will be placed on
+                {
+                    try{
+                        int * val = third.pop();
+                        fourth.push(val);
+                        move = "Player " + to_string(player) + " moved disk " + to_string(*val)+ " from Tower 3 to 4.\n";
+                        moves.enqueue(move);
+                    }
+                    catch(Stack<int>::Over){cout << "Tower 4 is full\n";}
+                    catch(Stack<int>::Under){cout<< "Tower 3 is empty\n";}
+                }
+                else
+                {
+                    cout << "\n Error: Disk is too large \n\n";
+                }
+            }
+        }
+        if(movefrom==3 && moveto == 5){
+            if (fifth.top == -1)
+            {
+                try{
+                    int * val = third.pop();
+                    fifth.push(val);
+                    move = "Player " + to_string(player) + " moved disk " + to_string(*val)+ " from Tower 3 to 5.\n";
+                    moves.enqueue(move);
+                }
+                catch(Stack<int>::Over){cout << "Tower 5 is full\n";}
+                catch(Stack<int>::Under){cout<< "Tower 3 is empty\n";}
+            }
+            else if (fifth.top != -1){
+                if (*third.tower[third.top] >= numDisks + 1 && *third.tower[third.top] <= numDisks * 2)       // If the tower numbers are between player 2's numbers
+                {
+                    z = *third.tower[third.top] - 3;
+                }
+                else{
+                    z = *third.tower[third.top];
+                }
+                if (*fifth.tower[fifth.top] >= numDisks + 1 && *fifth.tower[fifth.top] <= numDisks * 2)       // If the tower numbers are between player 2's numbers
+                {
+                    q = *fifth.tower[fifth.top] - 3;
+                }
+                else{
+                    q = *fifth.tower[fifth.top];
+                }
+                if (z <= q || q == 0)     // If the disk size moving from is smaller than or the same as the one it will be placed on
+                {
+                    try{
+                        int * val = third.pop();
+                        fifth.push(val);
+                        move = "Player " + to_string(player) + " moved disk " + to_string(*val)+ " from Tower 3 to 5.\n";
+                        moves.enqueue(move);
+                    }
+                    catch(Stack<int>::Over){cout << "Tower 5 is full\n";}
+                    catch(Stack<int>::Under){cout<< "Tower 3 is empty\n";}
+                }
+                else
+                {
+                    cout << "\n Error: Disk is too large \n\n";
+                }
+            }
+        }
+
+
+        if(movefrom==4 && moveto == 1){
+            if (first.top == -1){
+                try{
+                    int *val = fourth.pop();
+                    first.push(val);
+                    move = "Player " + to_string(player) + " moved disk " + to_string(*val)+ " from Tower 4 to 1.\n";
+                    moves.enqueue(move);
+                }
+                catch(Stack<int>::Over){cout << "Tower 1 is full\n";}
+                catch(Stack<int>::Under){cout<< "Tower 4 is empty\n";}
+            }
+            else if (first.top != -1){
+                if (*first.tower[first.top] >= numDisks + 1 && *first.tower[first.top] <= numDisks * 2)       // If the tower numbers are between player 2's numbers
+                {
+                    x = *first.tower[first.top] - 3;
+                }
+                else{
+                    x = *first.tower[first.top];
+                }
+                if (*fourth.tower[fourth.top] >= numDisks + 1 && *fourth.tower[fourth.top] <= numDisks * 2)       // If the tower numbers are between player 2's numbers
+                {
+                    w = *fourth.tower[fourth.top] - 3;
+                }
+                else{
+                    w = *fourth.tower[fourth.top];
+                }
+                if (w <= x || x == 0)     // If the disk size moving from is smaller than or the same as the one it will be placed on
+                {
+                    try{
+                        int *val = fourth.pop();
+                        first.push(val);
+                        move = "Player " + to_string(player) + " moved disk " + to_string(*val)+ " from Tower 4 to 1.\n";
+                        moves.enqueue(move);
+                    }
+                    catch(Stack<int>::Over){cout << "Tower 1 is full\n";}
+                    catch(Stack<int>::Under){cout<< "Tower 4 is empty\n";}
+                }
+                else
+                {
+                    cout << "\n Error: Disk is too large \n\n";
+                }
+            }
+        }
+        if(movefrom==4 && moveto == 2){
+            if (two.top == -1)
+            {
+                try{
+                    int * val = fourth.pop();
+                    two.push(val);
+                    move = "Player " + to_string(player) + " moved disk " + to_string(*val)+ " from Tower 4 to 2.\n";
+                    moves.enqueue(move);
+                }
+                catch(Stack<int>::Over){cout << "Tower 2 is full\n";}
+                catch(Stack<int>::Under){cout<< "Tower 4 is empty\n";}
+            }
+            else if (two.top != -1){
+                if (*fourth.tower[fourth.top] >= numDisks + 1 && *fourth.tower[fourth.top] <= numDisks * 2)       // If the tower numbers are between player 2's numbers
+                {
+                    w = *fourth.tower[fourth.top] - 3;
+                }
+                else{
+                    w = *fourth.tower[fourth.top];
+                }
+                if (*two.tower[two.top] >= numDisks + 1 && *two.tower[two.top] <= numDisks * 2)       // If the tower numbers are between player 2's numbers
+                {
+                    y = *two.tower[two.top] - 3;
+                }
+                else{
+                    y = *two.tower[two.top];
+                }
+                if (w <= y || y == 0)     // If the disk size moving from is smaller than or the same as the one it will be placed on
+                {
+                    try{
+                        int * val = fourth.pop();
+                        two.push(val);
+                        move = "Player " + to_string(player) + " moved disk " + to_string(*val)+ " from Tower 4 to 2.\n";
+                        moves.enqueue(move);
+                    }
+                    catch(Stack<int>::Over){cout << "Tower 2 is full\n";}
+                    catch(Stack<int>::Under){cout<< "Tower 4 is empty\n";}
+                }
+                else
+                {
+                    cout << "\n Error: Disk is too large \n\n";
+                }
+            }
+        }
+        if(movefrom==4 && moveto == 3){
+            if (third.top == -1){
+                try{
+                    int * val = fourth.pop();
+                    third.push(val);
+                    move = "Player " + to_string(player) + " moved disk " + to_string(*val)+ " from Tower 4 to 3.\n";
+                    moves.enqueue(move);
+                }
+                catch(Stack<int>::Over){cout << "Tower 3 is full\n";}
+                catch(Stack<int>::Under){cout<< "Tower 4 is empty\n";}
+            }
+            else if (third.top != -1){
+                if (*third.tower[third.top] >= numDisks + 1 && *third.tower[third.top] <= numDisks * 2)       // If the tower numbers are between player 2's numbers
+                {
+                    z = *third.tower[third.top] - 3;
+                }
+                else{
+                    z = *third.tower[third.top];
+                }
+                if (*fourth.tower[fourth.top] >= numDisks + 1 && *fourth.tower[fourth.top] <= numDisks * 2)       // If the tower numbers are between player 2's numbers
+                {
+                    w = *fourth.tower[fourth.top] - 3;
+                }
+                else{
+                    w = *fourth.tower[fourth.top];
+                }
+                if (w <= z || z == 0)     // If the disk size moving from is smaller than or the same as the one it will be placed on
+                {
+                    try{
+                        int * val = fourth.pop();
+                        third.push(val);
+                        move = "Player " + to_string(player) + " moved disk " + to_string(*val)+ " from Tower 4 to 3.\n";
+                        moves.enqueue(move);
+                    }
+                    catch(Stack<int>::Over){cout << "Tower 3 is full\n";}
+                    catch(Stack<int>::Under){cout<< "Tower 4 is empty\n";}
+                }
+                else
+                {
+                    cout << "\n Error: Disk is too large \n\n";
+                }
+            }
+        }
+        if(movefrom==4 && moveto == 5){
+            if (fifth.top == -1)
+            {
+                try{
+                    int * val = fourth.pop();
+                    fifth.push(val);
+                    move = "Player " + to_string(player) + " moved disk " + to_string(*val)+ " from Tower 4 to 5.\n";
+                    moves.enqueue(move);
+                }
+                catch(Stack<int>::Over){cout << "Tower 5 is full\n";}
+                catch(Stack<int>::Under){cout<< "Tower 4 is empty\n";}
+            }
+            else if (fifth.top != -1){
+                if (*fourth.tower[fourth.top] >= numDisks + 1 && *fourth.tower[fourth.top] <= numDisks * 2)       // If the tower numbers are between player 2's numbers
+                {
+                    w = *fourth.tower[fourth.top] - 3;
+                }
+                else{
+                    w = *fourth.tower[fourth.top];
+                }
+                if (*fifth.tower[fifth.top] >= numDisks + 1 && *fifth.tower[fifth.top] <= numDisks * 2)       // If the tower numbers are between player 2's numbers
+                {
+                    q = *fifth.tower[fifth.top] - 3;
+                }
+                else{
+                    q = *fifth.tower[fifth.top];
+                }
+                if (w <= q || q == 0)     // If the disk size moving from is smaller than or the same as the one it will be placed on
+                {
+                    try{
+                        int * val = fourth.pop();
+                        fifth.push(val);
+                        move = "Player " + to_string(player) + " moved disk " + to_string(*val)+ " from Tower 4 to 5.\n";
+                        moves.enqueue(move);
+                    }
+                    catch(Stack<int>::Over){cout << "Tower 5 is full\n";}
+                    catch(Stack<int>::Under){cout<< "Tower 4 is empty\n";}
+                }
+                else
+                {
+                    cout << "\n Error: Disk is too large \n\n";
+                }
+            }
+        }
+
+
+        if(movefrom==5 && moveto == 1){
+            if (first.top == -1){
+                try{
+                    int *val = fifth.pop();
+                    first.push(val);
+                    move = "Player " + to_string(player) + " moved disk " + to_string(*val)+ " from Tower 5 to 1.\n";
+                    moves.enqueue(move);
+                }
+                catch(Stack<int>::Over){cout << "Tower 1 is full\n";}
+                catch(Stack<int>::Under){cout<< "Tower 5 is empty\n";}
+            }
+            else if (first.top != -1){
+                if (*first.tower[first.top] >= numDisks + 1 && *first.tower[first.top] <= numDisks * 2)       // If the tower numbers are between player 2's numbers
+                {
+                    x = *first.tower[first.top] - 3;
+                }
+                else{
+                    x = *first.tower[first.top];
+                }
+                if (*fifth.tower[fifth.top] >= numDisks + 1 && *fifth.tower[fifth.top] <= numDisks * 2)       // If the tower numbers are between player 2's numbers
+                {
+                    q = *fifth.tower[fifth.top] - 3;
+                }
+                else{
+                    q = *fifth.tower[fifth.top];
+                }
+                if (q <= x || x == 0)     // If the disk size moving from is smaller than or the same as the one it will be placed on
+                {
+                    try{
+                        int *val = fifth.pop();
+                        first.push(val);
+                        move = "Player " + to_string(player) + " moved disk " + to_string(*val)+ " from Tower 5 to 1.\n";
+                        moves.enqueue(move);
+                    }
+                    catch(Stack<int>::Over){cout << "Tower 1 is full\n";}
+                    catch(Stack<int>::Under){cout<< "Tower 5 is empty\n";}
+                }
+                else
+                {
+                    cout << "\n Error: Disk is too large \n\n";
+                }
+            }
+        }
+        if(movefrom==5 && moveto == 2){
+            if (two.top == -1)
+            {
+                try{
+                    int * val = fifth.pop();
+                    two.push(val);
+                    move = "Player " + to_string(player) + " moved disk " + to_string(*val)+ " from Tower 5 to 2.\n";
+                    moves.enqueue(move);
+                }
+                catch(Stack<int>::Over){cout << "Tower 2 is full\n";}
+                catch(Stack<int>::Under){cout<< "Tower 5 is empty\n";}
+            }
+            else if (two.top != -1){
+                if (*fifth.tower[fifth.top] >= numDisks + 1 && *fifth.tower[fifth.top] <= numDisks * 2)       // If the tower numbers are between player 2's numbers
+                {
+                    q = *fifth.tower[fifth.top] - 3;
+                }
+                else{
+                    q = *fifth.tower[fifth.top];
+                }
+                if (*two.tower[two.top] >= numDisks + 1 && *two.tower[two.top] <= numDisks * 2)       // If the tower numbers are between player 2's numbers
+                {
+                    y = *two.tower[two.top] - 3;
+                }
+                else{
+                    y = *two.tower[two.top];
+                }
+                if (q <= y || y == 0)     // If the disk size moving from is smaller than or the same as the one it will be placed on
+                {
+                    try{
+                        int * val = fifth.pop();
+                        two.push(val);
+                        move = "Player " + to_string(player) + " moved disk " + to_string(*val)+ " from Tower 5 to 2.\n";
+                        moves.enqueue(move);
+                    }
+                    catch(Stack<int>::Over){cout << "Tower 2 is full\n";}
+                    catch(Stack<int>::Under){cout<< "Tower 5 is empty\n";}
+                }
+                else
+                {
+                    cout << "\n Error: Disk is too large \n\n";
+                }
+            }
+        }
+        if(movefrom==5 && moveto == 3){
+            if (third.top == -1){
+                try{
+                    int * val = fifth.pop();
+                    third.push(val);
+                    move = "Player " + to_string(player) + " moved disk " + to_string(*val)+ " from Tower 5 to 3.\n";
+                    moves.enqueue(move);
+                }
+                catch(Stack<int>::Over){cout << "Tower 3 is full\n";}
+                catch(Stack<int>::Under){cout<< "Tower 5 is empty\n";}
+            }
+            else if (third.top != -1){
+                if (*third.tower[third.top] >= numDisks + 1 && *third.tower[third.top] <= numDisks * 2)       // If the tower numbers are between player 2's numbers
+                {
+                    z = *third.tower[third.top] - 3;
+                }
+                else{
+                    z = *third.tower[third.top];
+                }
+                if (*fifth.tower[fifth.top] >= numDisks + 1 && *fifth.tower[fifth.top] <= numDisks * 2)       // If the tower numbers are between player 2's numbers
+                {
+                    q = *fifth.tower[fifth.top] - 3;
+                }
+                else{
+                    q = *fifth.tower[fifth.top];
+                }
+                if (q <= z || z == 0)     // If the disk size moving from is smaller than or the same as the one it will be placed on
+                {
+                    try{
+                        int * val = fifth.pop();
+                        third.push(val);
+                        move = "Player " + to_string(player) + " moved disk " + to_string(*val)+ " from Tower 5 to 3.\n";
+                        moves.enqueue(move);
+                    }
+                    catch(Stack<int>::Over){cout << "Tower 3 is full\n";}
+                    catch(Stack<int>::Under){cout<< "Tower 5 is empty\n";}
+                }
+                else
+                {
+                    cout << "\n Error: Disk is too large \n\n";
+                }
+            }
+        }
+        if(movefrom==5 && moveto == 4){
+            if (fourth.top == -1){
+                try{
+                    int * val = fifth.pop();
+                    fourth.push(val);
+                    move = "Player " + to_string(player) + " moved disk " + to_string(*val)+ " from Tower 5 to 4.\n";
+                    moves.enqueue(move);
+                }
+                catch(Stack<int>::Over){cout << "Tower 4 is full\n";}
+                catch(Stack<int>::Under){cout<< "Tower 5 is empty\n";}
+            }
+            else if (fourth.top != -1){
+                if (*fourth.tower[fourth.top] >= numDisks + 1 && *fourth.tower[fourth.top] <= numDisks * 2)       // If the tower numbers are between player 2's numbers
+                {
+                    w = *fourth.tower[fourth.top] - 3;
+                }
+                else{
+                    w = *fourth.tower[fourth.top];
+                }
+                if (*fifth.tower[fifth.top] >= numDisks + 1 && *fifth.tower[fifth.top] <= numDisks * 2)       // If the tower numbers are between player 2's numbers
+                {
+                    q = *fifth.tower[fifth.top] - 3;
+                }
+                else{
+                    q = *fifth.tower[fifth.top];
+                }
+                if (y <= w || w == 0)     // If the disk size moving from is smaller than or the same as the one it will be placed on
+                {
+                    try{
+                        int * val = fifth.pop();
+                        fourth.push(val);
+                        move = "Player " + to_string(player) + " moved disk " + to_string(*val)+ " from Tower 5 to 4.\n";
+                        moves.enqueue(move);
+                    }
+                    catch(Stack<int>::Over){cout << "Tower 4 is full\n";}
+                    catch(Stack<int>::Under){cout<< "Tower 5 is empty\n";}
+                }
+                else
+                {
+                    cout << "\n Error: Disk is too large \n\n";
+                }
+            }
+        }
+
+        cout << "Tower 1: " << endl;
+        displayTower(first);
+        cout << "Tower 2: " << endl;
+        displayTower(two);
+        cout << "Tower 3: " << endl;
+        displayTower(third);
+        cout << "Tower 4: " << endl;
+        displayTower(fourth);
+        cout << "Tower 5: " << endl;
+        displayTower(fifth);
+
+        bool win1=0, win2=0, win4=0, win5=0;
+        if (player == 1){
+            win4 = check(fourth, numDisks, player);
+            win5 = check(fifth, numDisks, player);
+        }
+            if(win5 || win4){win=1; cout << "Player 1 won!\n";}
+        if (player == 2){
+            win1 = check(first, numDisks, player);
+            win2 = check(two, numDisks, player);}
+            if(win1 || win2){win=1; cout << "Player 2 won!\n";}
+        if (player ==1){player =2;}
+        else{player = 1;}
+
+    }
+    cout << "\nNow printing all of the game moves:\n\n";
+    moves.printQueue();
+
+return 0;
+}
+
+
+bool check(Stack<int> t, int num, int player) {
+    if (player == 1) {
+        int checkval = num;
+        for (int i = 0; i < num; i++) {
+            if (*t.tower[i] != checkval) {
+                return 0;
+            }
+            checkval -= 1;
+        }
+    }
+    else if (player == 2) {
+        int checkval = num + num;
+        for (int i = 0; i < num; i++) {
+            if (*t.tower[i] != checkval) {
+                return 0;
+            }
+            checkval -= 1;
+        }
+    }
+    return 1;
+}
