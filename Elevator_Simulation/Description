@@ -1,0 +1,32 @@
+//  Created by Andrew Dillon, Eric Michalski, Trent Slavik, and Timothy Holstein
+//  Copyright 2019, All Rights Reserved
+
+//  This code is a simulation of one to three elevators during the course of one day
+//    with randomized amounts of people arriving on each floor.
+
+//  The code begins with allowing people to arrive on any floor
+//    and includes three elevators.
+//  To alter this, simply comment out the
+//    lines of code mentioned near the beginning of Source.cpp
+//  To change the number of elevators, comment out the move
+//    functions which should be called in lines 83, 84, 90, and 91.
+
+//  People are generated each time the elevator moves a floor, but the chances
+//  of people "spawning" are low enough to not flood the simulation.
+
+***********
+Assumptions
+***********
+
+1. If the elevator is going up, it only picks people up along the way if they are in up queue
+2. If the elevator is going down, it only picks people down along the way if they are in down queue
+3. If elevator is idle, add 10 seconds to its run time since it is not picking anyone up
+4. If up and down queues are empty, the target floor for the elevator should be the fist floor on the waitingFloors list. If moving, the target floor 
+should be the floor of the first person in the queue, where queue is determined by the direction the elevator is moving
+5. The time for the elevator to move 1 floor is 10 seconds
+6. Time for people to board and exit the elevator is negligable
+7. Assume the building is 6 floors tall
+8. Assume elevator starts on floor 1
+9. Assume elevator can hold at max 10 people
+10. Weight of people on elevator does not matter
+11. Number of people waiting on a floor can not exceed 6
