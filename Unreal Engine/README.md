@@ -8,6 +8,7 @@ actual quality of the game.
 shot, hit with a frag grenade, or if the zombie AI tear it down.
 4) EDD Mine demos Kapkan's tripwire mine. A laser is shown at first, but it fades away similar to the actual in-game mine.
 These go on doorways and can be set off by either the player, which damages their armor and health, or the zombie AI I developed
+5) Soon to be added in order: Melusi's Banshee, Lesion's Gu Mine, and Jager's Active Defense System (ADS)
 
 I am also by myself and I am not attempting to construct a complete game, but rather show what I have learned and now know.
 Regardless, I have learned a lot by myself within Unreal Engine and this folder supports that.
