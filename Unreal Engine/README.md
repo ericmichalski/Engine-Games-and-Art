@@ -15,5 +15,5 @@ The Gu mine activates when a player steps on the gu. It will slow the player dow
 8) JagerADS is a video of Jager's Active Defense System which targets throwables, such as grenades, flashbangs, smokes, etc. and destroys up to three of them in a radius around itself. Currently its model is a yellow box and the trail is a grey line that goes from the ADS to where the grenade was hit within the area of effect that the ADS has. I had to use 3D trigonometry and discrete math to calculate where the grenade was within the sphere and move the lines position and rotation accordingly.
 9) Soon to be added: Deployable shield, poisonous gas smoke canister, barbed wire, drone
 
-I am also by myself and I am not attempting to construct a complete game, but rather show what I have learned and now know.
+I am also by myself and I am not attempting to construct a complete game to sell, but rather show what I have learned and now know.
 Regardless, I have learned a lot by myself within Unreal Engine and this folder supports that.
