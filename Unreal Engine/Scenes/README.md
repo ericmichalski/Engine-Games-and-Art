@@ -1,1 +1,1 @@
-This folder is for the various still scenes that I have developed
+This folder is for the various stationary scenes that I have developed
