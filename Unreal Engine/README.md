@@ -1,5 +1,7 @@
 This is a collection of projects and creations within Unreal Engine 4 that I developed.
 
+I plan to move things around soon and create unlisted videos on Youtube rather than uploading videos directly here
+
 1) Assets_Demo showcases the basic gameplay, weapons, and AI within my game as well as a frost trap from R6 Siege in a controlled environment.
 2) Demo_Compressed will show the level in the game that I constructed along with structures and environments that I developed myself.
 However, I had to compress it due to file restraints within github, so the quality of the video is quite poor compared to the
