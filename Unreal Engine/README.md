@@ -4,9 +4,7 @@ I plan to move things around soon and create unlisted videos on Youtube rather t
 The largest and most extensive project I have worked on is within the AmongUs folder.
 
 1) Assets_Demo showcases the basic gameplay, weapons, and AI within my game as well as a frost trap from R6 Siege in a controlled environment.
-2) Demo_Compressed will show the level in the game that I constructed along with structures and environments that I developed myself.
-However, I had to compress it due to file restraints within github, so the quality of the video is quite poor compared to the
-actual quality of the game.
+2) Demo_VideoLink includes a Youtube video link that will show the level in the game that I constructed along with structures and environments that I developed myself.
 3) Ela_GrzmotMine showcases Ela's Grzmot mine from R6 Siege. The Grzmot mine applies a stun and slow effect for about 6 seconds when a player moves within a certain radius of the mine.
 4) EDD Mine demos Kapkan's tripwire mine. A laser is shown at first, but it fades away similar to the actual in-game mine.
 These go on doorways and can be set off by either the player, which damages their armor and health, or the zombie AI I developed
