@@ -3,6 +3,8 @@ They do not remember much before awakening and have to explore and investigate t
 
 It is the first horror game that I have constructed and I originally just released a demo, but later decided to make a larger experience with a full game given the positive feedback.
 
+It took me about 45 hours to construct the demo, and I expanded upon it and spent 115 hours on the full game for a total of 160 hours.
+
 Full Game Trailer:
 https://youtu.be/nHrCKdisVgU
 
