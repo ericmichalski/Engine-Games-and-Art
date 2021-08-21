@@ -7,7 +7,7 @@ Full Game Trailer:
 https://youtu.be/nHrCKdisVgU
 
 Full Game Page:
-
+https://eric-michalski.itch.io/the-flight
 
 Demo Video:
 https://youtu.be/-PvDPwyIMD8
