@@ -11,7 +11,7 @@ https://youtu.be/nHrCKdisVgU
 Full Game Page:
 https://eric-michalski.itch.io/the-flight
 
-Demo Full Playthrough Video:
+Game Demo Playthrough Video:
 https://youtu.be/-PvDPwyIMD8
 
 Game Demo Page:
