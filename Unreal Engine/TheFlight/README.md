@@ -6,7 +6,7 @@ It is the first horror game that I have constructed and I originally just releas
 It took me about 45 hours to construct the demo, and I expanded upon it and spent 125 hours on the full game for a total of 170 hours.
 
 Full Game Trailer:
-https://youtu.be/nHrCKdisVgU
+https://youtu.be/XO_IaqT8Csc
 
 Full Game Page:
 https://eric-michalski.itch.io/the-flight
