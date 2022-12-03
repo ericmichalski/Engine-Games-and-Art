@@ -8,7 +8,7 @@ This is a collection of projects and creations within Unreal Engine 4 or 5. Most
 2) [Scenes](https://github.com/ericmichalski/Engine-Games-and-Art/tree/master/Unreal%20Engine/Scenes) is a collection of stationary scenes.
 3) [AmongUs](https://github.com/ericmichalski/Engine-Games-and-Art/tree/master/Unreal%20Engine/AmongUs) is a recreation of a map from the top down game Among Us to a first person, 3D version.
 4) [Various Assets](https://github.com/ericmichalski/Engine-Games-and-Art/tree/master/Unreal%20Engine/Various%20Assets) is a short video of a group of smaller coding projects and game assets that were not used in any released game.
-5) [Demo_VideoLink](https://github.com/ericmichalski/Engine-Games-and-Art/blob/master/Unreal%20Engine/Demo_VideoLink.md) is a video that will show the level in the very first unreleased game that I constructed along with structures and environments that I designed.
+5) [Demo_VideoLink](https://github.com/ericmichalski/Engine-Games-and-Art/blob/master/Unreal%20Engine/Demo_VideoLink.md) is a video that will show the level in my very first unreleased game about zombie survival along with structures and environments that I designed.
 
 ### Group
 1) [Transcience](https://github.com/ericmichalski/Engine-Games-and-Art/tree/master/Unreal%20Engine/Transcience) is my second game jam game that I constructed alongside five others, two of which were also programmers.
