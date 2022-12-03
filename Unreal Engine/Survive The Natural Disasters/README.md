@@ -11,7 +11,7 @@ I wanted to make a visually stunning and realistic version of the cartoony game 
 I also limited the amount of disasters (for release, but more could be added) as keeping it realistic is quite challenging.
 So, I incorporated a lightning storm, fire that burnt the environment, and a volcano launching magma rocks.
 
-This game took me around 158 hours to complete. 
+This game took me around 158 hours to complete. I learned a great amount about performance and how to improve it, and Niagara in Unreal Engine.
 
 [Gameplay Trailer](https://youtu.be/w2lxDjaNTe0)
 
