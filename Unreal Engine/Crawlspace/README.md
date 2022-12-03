@@ -1,6 +1,6 @@
 # Crawlspace
 
-Crawlspace is a short, first person horror game about exploring the small spaces underneath one's home after a child goes missing within them.
+Crawlspace is a short, first-person horror game about exploring the small spaces underneath one's home after a child goes missing within them.
 
 Similar to The Flight, I thought this was another interesting concept for a horror game.
 I wanted to move away from the traditional, walk-around type of indie horror game and I also wanted to focus on a
