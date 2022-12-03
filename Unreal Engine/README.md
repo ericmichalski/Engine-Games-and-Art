@@ -1,5 +1,5 @@
 This is a collection of projects and creations within Unreal Engine 4 or 5. Most were developed by myself, although a few were with a group.
-***Note***: please reference my newest creations (or fully released games) for my best work.
+****Note:*** please reference my newest creations (or fully released games) for my best work.
 
 # Individual
 1) The Flight is a short horror game based around an empty airport and is the largest project I have worked on.
