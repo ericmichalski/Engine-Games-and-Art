@@ -14,3 +14,5 @@ So, I incorporated a lightning storm, fire that burnt the environment, and a vol
 This game took me around 158 hours to complete. 
 
 [Gameplay Trailer](https://youtu.be/w2lxDjaNTe0)
+
+[Game Page](https://eric-michalski.itch.io/survive-the-natural-disasters)
